@@ -14,8 +14,9 @@ from crochet.domain.model import Project
     ],
 )
 def test_create_project_from_event(name):
+    stream_id = uuid.uuid4()
     event = NewProjectCreated(
-        stream_id=uuid.uuid4(),
+        stream_id=stream_id,
         version=1,
         project_name=name,
     )
@@ -23,3 +24,4 @@ def test_create_project_from_event(name):
     project = Project([event])
 
     assert project.name == name
+    assert project.id == stream_id
