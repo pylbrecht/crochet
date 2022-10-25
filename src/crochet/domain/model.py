@@ -1,3 +1,4 @@
+import uuid
 from functools import singledispatchmethod
 
 from .events import Event, NewProjectCreated
@@ -17,7 +18,12 @@ class Project:
     @when.register
     def _(self, event: NewProjectCreated):
         self._name = event.project_name
+        self._id = event.stream_id
 
     @property
     def name(self) -> str:
         return self._name
+
+    @property
+    def id(self) -> uuid.UUID:
+        return self._id

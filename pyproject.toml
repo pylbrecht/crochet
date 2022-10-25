@@ -8,6 +8,7 @@ packages = [{include = "crochet", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+Flask = "^2.2.2"
 
 
 [tool.poetry.group.dev.dependencies]
