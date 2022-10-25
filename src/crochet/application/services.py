@@ -5,11 +5,17 @@ from typing import Any
 from crochet.domain.commands import Command, CreateNewProject
 from crochet.domain.events import NewProjectCreated
 from crochet.domain.model import Project
+from crochet.infrastructure import projections
 
 
 class ProjectService:
-    def __init__(self, event_store: Any):
+    def __init__(
+        self,
+        event_store: Any,
+        projection: projections.project.Projection,
+    ):
         self.event_store = event_store
+        self.projection = projection
 
     def execute(self, command: Command) -> Any:
         return self.when(command)
@@ -28,4 +34,7 @@ class ProjectService:
             project_name=command.project_name,
         )
         self.event_store.append(event)
+        self.projection.save(
+            projections.project.Project(event.stream_id, event.project_name)
+        )
         return Project(self.event_store.load_event_stream(stream_id))
