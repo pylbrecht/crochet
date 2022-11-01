@@ -8,6 +8,7 @@ from typing import Iterable, Optional
 class Project:
     id: uuid.UUID
     name: str
+    hook_size: str
 
 
 class Projection(ABC):

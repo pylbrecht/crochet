@@ -19,6 +19,7 @@ class Project:
     def _(self, event: NewProjectCreated):
         self._name = event.project_name
         self._id = event.stream_id
+        self._hook_size = event.hook_size
 
     @property
     def name(self) -> str:
@@ -27,3 +28,7 @@ class Project:
     @property
     def id(self) -> uuid.UUID:
         return self._id
+
+    @property
+    def hook_size(self) -> str:
+        return self._hook_size

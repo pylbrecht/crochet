@@ -19,9 +19,11 @@ def test_create_project_from_event(name):
         stream_id=stream_id,
         version=1,
         project_name=name,
+        hook_size="42",
     )
 
     project = Project([event])
 
     assert project.name == name
     assert project.id == stream_id
+    assert project.hook_size == "42"

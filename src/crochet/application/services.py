@@ -32,9 +32,12 @@ class ProjectService:
             stream_id=stream_id,
             version=1,
             project_name=command.project_name,
+            hook_size=command.hook_size,
         )
         self.event_store.append(event)
         self.projection.save(
-            projections.project.Project(event.stream_id, event.project_name)
+            projections.project.Project(
+                event.stream_id, event.project_name, event.hook_size
+            )
         )
         return Project(self.event_store.load_event_stream(stream_id))

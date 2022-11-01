@@ -34,13 +34,15 @@ def create_app():
 def create_project():
     # TODO: add payload validation
     name = request.json["name"]
+    hook_size = request.json["hook_size"]
 
-    cmd = CreateNewProject(name)
+    cmd = CreateNewProject(name, hook_size)
     project = app.project_service.execute(cmd)
 
     response = {
         "id": project.id,
         "name": project.name,
+        "hook_size": project.hook_size,
     }
     return response, HTTPStatus.CREATED
 
@@ -48,6 +50,10 @@ def create_project():
 @bp.get("/projects/")
 def get_projects():
     return [
-        {"id": project.id, "name": project.name}
+        {
+            "id": project.id,
+            "name": project.name,
+            "hook_size": project.hook_size,
+        }
         for project in app.project_service.projection.get_all()
     ]

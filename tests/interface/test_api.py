@@ -25,27 +25,29 @@ def client(app):
 
 
 def test_returns_created_project(client):
-    payload = {"name": "test project"}
+    payload = {"name": "test project", "hook_size": "42"}
     response = client.post("/projects/", json=payload)
 
     assert response.status_code == 201
     assert response.json["id"]
     assert response.json["name"] == "test project"
+    assert response.json["hook_size"] == "42"
 
 
 def test_create_project(client):
-    payload = {"name": "test project"}
+    payload = {"name": "test project", "hook_size": "42"}
     response = client.post("/projects/", json=payload)
 
     stream_id = uuid.UUID(response.json["id"])
     [event] = list(client.application.event_store.load_event_stream(stream_id))
     assert isinstance(event, NewProjectCreated)
     assert event.project_name == "test project"
+    assert event.hook_size == "42"
 
 
 def test_list_all_projects(client):
     project_id = uuid.uuid4()
-    project = projections.project.Project(project_id, "a project")
+    project = projections.project.Project(project_id, "a project", "42")
     client.application.project_service.projection.save(project)
 
     response = client.get("/projects/")
@@ -54,5 +56,6 @@ def test_list_all_projects(client):
         {
             "id": str(project_id),
             "name": "a project",
+            "hook_size": "42",
         }
     ]

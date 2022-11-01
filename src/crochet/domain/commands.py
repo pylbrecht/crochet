@@ -8,3 +8,4 @@ class Command:
 @dataclass
 class CreateNewProject(Command):
     project_name: str
+    hook_size: str

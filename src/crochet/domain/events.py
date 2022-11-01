@@ -11,3 +11,4 @@ class Event:
 @dataclass
 class NewProjectCreated(Event):
     project_name: str
+    hook_size: str
