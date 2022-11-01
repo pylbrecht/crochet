@@ -3,6 +3,7 @@ from http import HTTPStatus
 from flask import Blueprint, Flask
 from flask import current_app as app
 from flask import request
+from flask_cors import CORS
 
 from crochet.application.services import ProjectService
 from crochet.domain.commands import CreateNewProject
@@ -15,6 +16,10 @@ bp = Blueprint("auth", __name__, url_prefix="/")
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(bp)
+
+    # FIXME: Enable CORS for all requests. This should only be done during
+    # development.
+    CORS(app)
 
     # TODO: replace this with a proper dependency container
     app.event_store = MemoryEventStore()
